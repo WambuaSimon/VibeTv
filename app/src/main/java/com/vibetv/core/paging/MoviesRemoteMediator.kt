@@ -106,7 +106,7 @@ class MoviesRemoteMediator @Inject internal constructor(
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, NowPlayingResultEntity>): MovieRemoteKeyEntity? {
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
-        }?.data?.lastOrNull()?.let { movie ->
+        }?.data?.firstOrNull()?.let { movie ->
             db.movieRemoteKeyDao().getRemoteKeyByMovieID(movie.id)
         }
     }
