@@ -7,6 +7,7 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import dagger.hilt.android.HiltAndroidApp
 
+
 @HiltAndroidApp
 class MovieApp : Application(), ImageLoaderFactory {
     override fun newImageLoader(): ImageLoader {
@@ -24,6 +25,8 @@ class MovieApp : Application(), ImageLoaderFactory {
                     .build()
             }
             .build()
+
+
     }
 
 }

@@ -1,6 +1,5 @@
 package com.vibetv.presentation.home.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vibetv.common.Constants
 import com.vibetv.core.data.entities.TopRatedResultEntity
 import com.vibetv.designSystem.components.MovieCard
 
@@ -31,8 +29,7 @@ fun TopRated(
         items(topRatedResponse.orEmpty()) { topRatedItem ->
             MovieCard(
                 modifier = modifier,
-                posterPathBaseUrl = Constants.POSTER_PATH,
-                poster = topRatedItem.poster_path,
+                poster = topRatedItem.poster_path.orEmpty(),
                 voteAverage = topRatedItem.vote_average,
                 id = topRatedItem.id,
                 onClick = {

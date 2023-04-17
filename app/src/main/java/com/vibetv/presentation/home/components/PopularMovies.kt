@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vibetv.common.Constants
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.designSystem.components.MovieCard
 
@@ -28,8 +27,7 @@ fun PopularMovies(
         items(popularResponse.orEmpty()) { popularMoviesItem ->
             MovieCard(
                 modifier = modifier,
-                posterPathBaseUrl = Constants.POSTER_PATH,
-                poster = popularMoviesItem.poster_path,
+                poster = popularMoviesItem.poster_path.orEmpty(),
                 voteAverage = popularMoviesItem.vote_average,
                 id = popularMoviesItem.id,
                 onClick = {

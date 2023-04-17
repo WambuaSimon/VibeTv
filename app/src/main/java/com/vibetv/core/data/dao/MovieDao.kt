@@ -19,10 +19,13 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
     //Now Playing
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNowPlaying(nowPlayingResult: List<NowPlayingResultEntity>)
+    suspend fun insertAll(playing: List<NowPlayingResultEntity>)
 
     @Query("SELECT * FROM now_playing")
     fun nowPlaying(): PagingSource< Int, NowPlayingResultEntity>
+
+    @Query("SELECT * FROM now_playing")
+    fun nowPlayingHome(): Flow<List<NowPlayingResultEntity>>
 
     @Query("DELETE FROM now_playing")
     suspend fun clearNowPlaying()
@@ -30,7 +33,7 @@ interface MovieDao {
     @Transaction
     suspend fun replaceNowPlaying(nowPlayingResult: List<NowPlayingResultEntity>) {
         clearNowPlaying()
-        insertNowPlaying(nowPlayingResult)
+        insertAll(nowPlayingResult)
     }
 
     // Popular

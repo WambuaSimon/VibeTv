@@ -3,9 +3,6 @@ package com.vibetv.core.api
 import com.vibetv.core.model.genre.GenreResult
 import com.vibetv.core.model.movie_details.MovieDetailsResponse
 import com.vibetv.core.model.movie_response.MovieResponse
-import com.vibetv.core.model.movie_response.MovieResults
-import com.vibetv.core.model.movie_response.Paged
-import com.vibetv.core.model.season_details.Episode
 import com.vibetv.core.model.season_details.SeasonDetails
 import com.vibetv.core.model.shows.EpisodeItem
 import com.vibetv.core.model.shows.ShowResponse
@@ -17,8 +14,11 @@ import retrofit2.http.Query
 interface VibeApi {
     @GET("movie/now_playing")
     suspend fun getNowPlaying(
-        @Query("page") page:Int
+        @Query("page") page: Int,
     ): MovieResponse
+
+    @GET("movie/now_playing")
+    suspend fun nowPlaying(): MovieResponse
 
     @GET("movie/top_rated")
     suspend fun getTopRated(): VibeCloudResponse<MovieResponse>
@@ -61,6 +61,6 @@ interface VibeApi {
     ): VibeCloudResponse<EpisodeItem>
 
     @GET("discover/movie")
-    suspend fun getMovieByGenre(@Query("with_genres") genreId: Int?=null): VibeCloudResponse<MovieResponse>
+    suspend fun getMovieByGenre(@Query("with_genres") genreId: Int? = null): VibeCloudResponse<MovieResponse>
 
 }

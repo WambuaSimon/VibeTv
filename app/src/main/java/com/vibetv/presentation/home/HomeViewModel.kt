@@ -15,12 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    repo: MovieRepository
+    repo: MovieRepository,
 ) : ViewModel() {
     val model: HomeModel = HomeModel()
-    val state:HomePageState = HomePageState()
-
-    val getNowPlaying = repo.getNowPlaying()
+    val state: HomePageState = HomePageState()
 
     init {
         viewModelScope.launch {
@@ -30,20 +28,23 @@ class HomeViewModel @Inject constructor(
                 repo.getPopular()
             ) { playing, top, popular ->
                 when {
-                  top is Resource.Success || popular is Resource.Success -> {
+                    playing is Resource.Success || top is Resource.Success || popular is Resource.Success -> {
 
                         ViewState.Ready(
                             Resource.Success(
-                              state.copy(
+                                state.copy(
+                                    topRated = top.result?.toList(),
+                                    popular = popular.result?.toList(),
+                                    nowPlaying = playing.result?.toList()
 
-                                      topRated = top.result?.toList(),
-                                      popular = popular.result?.toList()
-
-                              )
+                                )
                             )
                         )
 
                     }
+
+                    playing is Resource.Error ->
+                        ViewState.Ready(Resource.Error(playing.throwable))
 
                     top is Resource.Error ->
                         ViewState.Ready(Resource.Error<HomePageState>(top.throwable))
@@ -57,16 +58,17 @@ class HomeViewModel @Inject constructor(
 
             }.distinctUntilChanged()
                 .collect { viewState ->
-                model.state = viewState
-                if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
-                    val result = viewState.value.result
-                    HomePageState(
-                        popular = result.popular,
-                        topRated = result.topRated
-                    )
-                }
+                    model.state = viewState
+                    if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
+                        val result = viewState.value.result
+                        HomePageState(
+                            popular = result.popular,
+                            topRated = result.topRated,
+                            nowPlaying = result.nowPlaying
+                        )
+                    }
 
-            }
+                }
 
         }
     }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.vibetv.presentation.home
 
 import androidx.compose.foundation.layout.Box
@@ -15,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -23,24 +20,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.paging.compose.LazyPagingItems
 import com.vibetv.R
 import com.vibetv.common.utils.ViewState
-import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.designSystem.components.EmptyScreen
+import com.vibetv.designSystem.components.MovieHeader
 import com.vibetv.presentation.home.components.NowPlaying
 import com.vibetv.presentation.home.components.PopularMovies
 import com.vibetv.presentation.home.components.TopRated
 import com.vibetv.presentation.home.state.HomeModel
-import com.vibetv.designSystem.components.MovieHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun HomeRoute(
+internal fun HomeScreen(
     modifier: Modifier = Modifier,
     model: HomeModel,
     navigateToMovieDetails: (id: Int) -> Unit,
-    nowPlaying: LazyPagingItems<NowPlayingResultEntity>
+    navigateToMovieGrid: () -> Unit
 ) {
 
     val state = model.state
@@ -73,7 +68,7 @@ internal fun HomeRoute(
 
         when (state) {
             ViewState.Empty -> {
-              EmptyScreen(modifier = modifier)
+                EmptyScreen(modifier = modifier)
             }
 
             ViewState.Loading -> {
@@ -99,11 +94,14 @@ internal fun HomeRoute(
                     MovieHeader(
                         modifier = modifier,
                         title = R.string.home_now_showing_title,
-                        actionText = R.string.home_now_showing_action
-                    )
+                        actionText = R.string.home_now_showing_action,
+                        onMovieGridClicked = navigateToMovieGrid,
+
+                        )
+
                     NowPlaying(
-                        nowPlaying = nowPlaying,
-                        modifier = Modifier.fillMaxWidth(),
+                        nowPlaying = result?.nowPlaying,
+                        modifier = Modifier,
                         onMovieDetailsClick = navigateToMovieDetails
 
                     )
@@ -111,7 +109,8 @@ internal fun HomeRoute(
                     MovieHeader(
                         modifier = modifier,
                         title = R.string.home_top_rated_title,
-                        actionText = R.string.home_top_rated_action
+                        actionText = R.string.home_top_rated_action,
+                        onMovieGridClicked = navigateToMovieGrid,
                     )
 
                     TopRated(
@@ -123,7 +122,8 @@ internal fun HomeRoute(
                     MovieHeader(
                         modifier = modifier,
                         title = R.string.home_popular_movies_title,
-                        actionText = R.string.home_popular_movies_action
+                        actionText = R.string.home_popular_movies_action,
+                        onMovieGridClicked = navigateToMovieGrid,
                     )
 
 

@@ -1,6 +1,5 @@
 package com.vibetv.core.data
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
@@ -25,10 +24,10 @@ import com.vibetv.core.data.entities.MovieByGenreEntity
 import com.vibetv.core.data.entities.MovieRemoteKeyEntity
 import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
-import com.vibetv.core.data.entities.season.SeasonDetailsEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import com.vibetv.core.data.entities.season.EpisodeEntity
+import com.vibetv.core.data.entities.season.SeasonDetailsEntity
 import com.vibetv.core.data.entities.show_details.ShowDetailsResponseEntity
 import com.vibetv.core.data.entities.shows.AiringTodayEntity
 import com.vibetv.core.data.entities.shows.LatestShowEntity
@@ -54,25 +53,11 @@ import com.vibetv.core.data.entities.shows.TopRatedShowsEntity
 
 
     ],
-    version = 17,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-        AutoMigration(from = 2, to = 3),
-        AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5),
-        AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7),
-        AutoMigration(from = 7, to = 8),
-        AutoMigration(from = 8, to = 9),
-        AutoMigration(from = 9, to = 10),
-        AutoMigration(from = 10, to = 11),
-        AutoMigration(from = 11, to = 12),
-        AutoMigration(from = 12, to = 13, spec = AppDatabase.To13AutoMigrationSpec::class),
-        AutoMigration(from = 13, to = 14),
-        AutoMigration(from = 14, to = 15),
-        AutoMigration(from = 15, to = 16),
-        AutoMigration(from = 16, to = 17),
-    ]
+    version = 1,
+    /* autoMigrations = [
+         AutoMigration(from = 1, to = 2),
+
+     ]*/
 )
 
 @TypeConverters(

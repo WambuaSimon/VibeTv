@@ -1,66 +1,39 @@
 package com.vibetv.designSystem.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.vibetv.common.shimmerBrush
+import com.vibetv.common.Constants
 import com.vibetv.designSystem.theme.VibeIcons
+import com.vibetv.designSystem.theme.VibeTVTheme
 
 @Composable
 fun MovieCard(
     modifier: Modifier,
-    posterPathBaseUrl: String,
     poster: String,
     voteAverage: Double,
     onClick: (Int) -> Unit,
     id: Int,
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
+        AsyncImagePoster(modifier = modifier.clickable { onClick(id) }, posterImage = poster)
 
-        Card(modifier = Modifier.clickable { onClick(id) }) {
-            AsyncImage(
-                modifier = modifier
-                    .background(
-                        shimmerBrush(
-                            targetValue = 1300f,
-                            showShimmer = true
-                        )
-                    )
-                    .align(Alignment.CenterHorizontally)
-                    .height(170.dp)
-                    .width(100.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(posterPathBaseUrl + poster)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-
-                )
-        }
         Row {
             VibeIcon(
                 imageVector = VibeIcons.Star,
@@ -74,6 +47,20 @@ fun MovieCard(
                 style = MaterialTheme.typography.labelMedium
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun MovieCardPreview() {
+    VibeTVTheme {
+        MovieCard(
+            modifier = Modifier,
+            poster = "${Constants.POSTER_PATH}/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+            voteAverage = 7.5,
+            onClick = {},
+            id = 323
+        )
     }
 }
 

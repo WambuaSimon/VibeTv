@@ -6,12 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "movie_remote_keys")
 data class MovieRemoteKeyEntity(
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "movie_id")
-    val movieID: Int,
-    val prevKey: Int?,
-    val currentPage: Int,
-    val nextKey: Int?,
+    @PrimaryKey
+    val id:String = "movieRemoteKey",
+    val nextPage: Int?,
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis()
 )

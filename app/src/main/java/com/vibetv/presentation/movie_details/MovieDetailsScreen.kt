@@ -1,8 +1,6 @@
 package com.vibetv.presentation.movie_details
 
-import android.util.Log
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +24,6 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material.icons.rounded.StarHalf
 import androidx.compose.material.icons.rounded.Timelapse
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.vibetv.common.Constants
-import com.vibetv.common.shimmerBrush
 import com.vibetv.common.utils.ViewState
 import com.vibetv.designSystem.components.AsyncImageBackdrop
 import com.vibetv.designSystem.components.EmptyScreen
@@ -107,7 +103,7 @@ internal fun MovieDetailsScreen(
                 snackbarHost = { SnackbarHost(snackbarHostState) },
             ) { contentPadding ->
 
-                Crossfade(targetState = result) { result ->
+                Crossfade(targetState = result, label = "") { result ->
                     if (result == null) {
                         EmptyScreen(modifier = modifier)
                     } else {
@@ -137,7 +133,7 @@ internal fun MovieDetailsScreen(
                                             .height(200.dp)
                                             .width(150.dp),
                                         model = ImageRequest.Builder(LocalContext.current)
-                                            .data(Constants.POSTER_PATH + result.poster_path.orEmpty())
+                                            .data(Constants.POSTER_PATH + result.poster_path)
                                             .crossfade(true)
                                             .build(),
                                         contentDescription = null,
@@ -192,14 +188,14 @@ internal fun MovieDetailsScreen(
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = "Release date:")
-                                        Text(text = "${result?.release_date}")
+                                        Text(text = result.release_date)
                                     }
                                     Row(
                                         modifier = modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(text = "Revenue:")
-                                        Text("${result?.revenue} USD")
+                                        Text("${result.revenue} USD")
                                     }
                                     Row {
                                         IconButton(onClick = { }) {
@@ -227,7 +223,7 @@ internal fun MovieDetailsScreen(
                             FlowRow(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                             ) {
-                                result?.genres?.map {
+                                result.genres.map {
                                     Text(
                                         text = it.name.plus(" "),
                                         style = MaterialTheme.typography.bodySmall
@@ -239,12 +235,12 @@ internal fun MovieDetailsScreen(
                             Spacer(modifier = modifier.height(16.dp))
                             Text(text = "Overview", style = MaterialTheme.typography.titleMedium)
                             Text(
-                                text = "${result?.overview}",
+                                text = result.overview,
                                 style = MaterialTheme.typography.bodyMedium
                             )
 
                             Spacer(modifier = modifier.height(16.dp))
-                            if (result?.production_companies != null) {
+                            if (result.production_companies.isNotEmpty()) {
                                 Text(
                                     text = "Production Companies",
                                     style = MaterialTheme.typography.titleMedium
