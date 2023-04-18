@@ -1,7 +1,6 @@
 package com.vibetv.presentation.movie_details
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -91,11 +90,14 @@ internal fun MovieDetailsScreen(
                             )
                         },
                         navigationIcon = {
-                            Icon(
-                                Icons.Rounded.ArrowBack,
-                                contentDescription = null,
-                                modifier.clickable { onNavigateUp() }
-                            )
+                            IconButton(onClick = {
+                                onNavigateUp()
+                            }) {
+                                Icon(
+                                    Icons.Rounded.ArrowBack,
+                                    contentDescription = null,
+                                )
+                            }
                         },
 
                         )

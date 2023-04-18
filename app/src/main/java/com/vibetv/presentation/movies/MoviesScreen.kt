@@ -2,10 +2,12 @@ package com.vibetv.presentation.movies
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +45,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.vibetv.R
 import com.vibetv.common.Constants
+import com.vibetv.common.shimmerBrush
 import com.vibetv.common.utils.Resource
-import com.vibetv.common.utils.ViewState
 import com.vibetv.presentation.movies.components.MovieGenre
 
 
@@ -52,13 +54,13 @@ import com.vibetv.presentation.movies.components.MovieGenre
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
-    genreModel: GenreModel,
+    genreState: Resource<GenreState>,
     allMoviesModel: AllMoviesModel,
     onGenreClicked: (Int) -> Unit,
     onDetailsClick: (Int) -> Unit,
 ) {
-
     val state = allMoviesModel.state
+
     val errorState = allMoviesModel.error
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -86,20 +88,21 @@ fun MoviesScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+
         MovieGenre(
             modifier = modifier,
-            genreModel = genreModel,
+            genreState = genreState,
             onGenreClicked = onGenreClicked,
 
-        )
+            )
 
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { contentPadding ->
-            Crossfade(state) { state ->
-
+            Crossfade(state, label = "") { state ->
                 when (state) {
-                    ViewState.Empty -> {
+
+                    Resource.Loading -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
@@ -109,114 +112,128 @@ fun MoviesScreen(
 
                     }
 
-                    ViewState.Loading -> Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    is Resource.Success, is Resource.Error -> MovieContent(
+                        modifier,
+                        allMoviesState = state,
+                        onDetailsClick = onDetailsClick,
+                        contentPadding = contentPadding
+                    )
 
-                    is ViewState.Ready -> if (state.value is Resource.Success) {
-
-                        val allMovies = state.value.result.allMovies
-
-
-                        LazyColumn(modifier = modifier.padding(contentPadding)) {
-                            items(allMovies.orEmpty()) { movie ->
-
-                                Row(
-                                    modifier = modifier
-                                        .padding(top = 16.dp)
-                                        .fillMaxWidth(),
-                                ) {
-                                    Card(
-                                        elevation = CardDefaults.cardElevation(10.dp),
-                                        modifier = modifier
-                                            .padding(end = 16.dp, bottom = 16.dp)
-                                            .clickable { onDetailsClick(movie.id) }
-                                    ) {
-                                        AsyncImage(
-                                            modifier = modifier
-                                                .height(200.dp)
-                                                .width(150.dp),
-                                            model = ImageRequest.Builder(LocalContext.current)
-                                                .data(Constants.POSTER_PATH + movie.poster_path)
-                                                .crossfade(true)
-                                                .build(),
-                                            contentDescription = null,
-                                            contentScale = ContentScale.FillBounds,
-
-                                            )
-
-                                    }
-                                    Column(
-                                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                                    ) {
-
-                                        Text(
-                                            text = movie.title,
-                                            style = MaterialTheme.typography.titleMedium
-                                        )
-                                        Text(
-                                            text = movie.overview,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            maxLines = 2,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-
-                                        Text(
-                                            text = "Released: " + movie.release_date,
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-
-                                        Spacer(modifier = Modifier.height(8.dp))
-
-                                        Row(
-                                            modifier = modifier.fillMaxWidth(),
-
-                                            ) {
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Rounded.StarHalf,
-                                                    contentDescription = null
-                                                )
-                                                Text(
-                                                    text = "${movie.vote_average}",
-                                                    style = MaterialTheme.typography.labelMedium
-                                                )
-                                            }
-
-                                            Spacer(modifier = modifier.width(50.dp))
-                                            AnimatedVisibility(visible = !movie.adult) {
-
-                                                Row(
-                                                    verticalAlignment = Alignment.CenterVertically
-                                                ) {
-                                                    Icon(
-                                                        imageVector = Icons.Outlined.Warning,
-                                                        contentDescription = null
-                                                    )
-                                                    Text(
-                                                        text = "PG",
-                                                        style = MaterialTheme.typography.labelMedium
-                                                    )
-                                                }
-                                            }
-
-                                        }
-                                    }
-
-
-                                }
-
-
-                            }
-                        }
-                    }
                 }
             }
+        }
+
+    }
+}
+
+@Composable
+fun MovieContent(
+    modifier: Modifier,
+    contentPadding: PaddingValues,
+    onDetailsClick: (Int) -> Unit,
+    allMoviesState: Resource<AllMoviesState>,
+
+    ) {
+
+    val allMovies = allMoviesState.result?.allMovies
+
+    LazyColumn(modifier = modifier.padding(contentPadding)) {
+        items(allMovies.orEmpty()) { movie ->
+
+            Row(
+                modifier = modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+            ) {
+                Card(
+                    elevation = CardDefaults.cardElevation(10.dp),
+                    modifier = modifier
+                        .padding(end = 16.dp, bottom = 16.dp)
+                        .clickable { onDetailsClick(movie.id) }
+                ) {
+                    AsyncImage(
+                        modifier = modifier
+                            .background(
+                                shimmerBrush(
+                                    targetValue = 1300f,
+                                    showShimmer = true
+                                )
+                            )
+                            .height(150.dp)
+                            .width(100.dp),
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(Constants.POSTER_PATH + movie.poster_path)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillBounds,
+
+                        )
+
+                }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+
+                    Text(
+                        text = movie.title,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = movie.overview,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Text(
+                        text = "Released: " + movie.release_date,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = modifier.fillMaxWidth(),
+
+                        ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.StarHalf,
+                                contentDescription = null
+                            )
+                            Text(
+                                text = "${movie.vote_average}",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+
+                        Spacer(modifier = modifier.width(50.dp))
+                        AnimatedVisibility(visible = !movie.adult) {
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Warning,
+                                    contentDescription = null
+                                )
+                                Text(
+                                    text = "PG",
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+
+                    }
+                }
+
+
+            }
+
+
         }
     }
 }

@@ -56,7 +56,7 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopRated(topRatedResult: List<TopRatedResultEntity>)
 
-    @Query("SELECT * FROM top_rated")
+    @Query("SELECT * FROM top_rated ORDER BY vote_average Desc")
     fun topRated(): Flow<List<TopRatedResultEntity>>
 
     @Query("DELETE FROM top_rated")

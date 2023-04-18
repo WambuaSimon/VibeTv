@@ -30,7 +30,7 @@ fun AsyncImageBackdrop(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(Constants.POSTER_PATH + backdropImage)
                 .crossfade(true)
-                .crossfade(durationMillis = 500)
+                .crossfade(durationMillis = 250)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,

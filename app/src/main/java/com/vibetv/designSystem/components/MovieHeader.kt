@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 fun MovieHeader(
     modifier: Modifier,
     @StringRes title: Int,
-    @StringRes actionText: Int,
+    @StringRes actionText: Int? = null,
     onMovieGridClicked: (() -> Unit)? = null,
 ) {
 
@@ -34,10 +34,11 @@ fun MovieHeader(
                 }
 
             ) {
-                Text(
-                    text = stringResource(id = actionText),
-                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
-                )
+                if (actionText != null)
+                    Text(
+                        text = stringResource(id = actionText),
+                        style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
+                    )
             }
         }
 

@@ -93,6 +93,20 @@ internal fun HomeScreen(
                 ) {
                     MovieHeader(
                         modifier = modifier,
+                        title = R.string.home_top_rated_title,
+                        onMovieGridClicked = navigateToMovieGrid,
+                        actionText = null
+                    )
+
+                    TopRated(
+                        modifier = modifier,
+                        topRatedResponse = result?.topRated,
+                        onMovieDetailsClick = navigateToMovieDetails
+                    )
+
+
+                    MovieHeader(
+                        modifier = modifier,
                         title = R.string.home_now_showing_title,
                         actionText = R.string.home_now_showing_action,
                         onMovieGridClicked = navigateToMovieGrid,
@@ -104,19 +118,6 @@ internal fun HomeScreen(
                         modifier = Modifier,
                         onMovieDetailsClick = navigateToMovieDetails
 
-                    )
-
-                    MovieHeader(
-                        modifier = modifier,
-                        title = R.string.home_top_rated_title,
-                        actionText = R.string.home_top_rated_action,
-                        onMovieGridClicked = navigateToMovieGrid,
-                    )
-
-                    TopRated(
-                        modifier = modifier,
-                        topRatedResponse = result?.topRated,
-                        onMovieDetailsClick = navigateToMovieDetails
                     )
 
                     MovieHeader(
