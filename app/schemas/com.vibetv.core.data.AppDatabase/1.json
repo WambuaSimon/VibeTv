@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "371752fe44eb694123272df9c31d8747",
+    "identityHash": "90640285d10e9b1020ca3b0f767ff352",
     "entities": [
       {
         "tableName": "now_playing",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genre` TEXT NOT NULL DEFAULT '', `release_date` TEXT NOT NULL DEFAULT '', `page` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genre` TEXT NOT NULL DEFAULT '', `release_date` TEXT DEFAULT '', `page` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -67,7 +67,7 @@
             "fieldPath": "release_date",
             "columnName": "release_date",
             "affinity": "TEXT",
-            "notNull": true,
+            "notNull": false,
             "defaultValue": "''"
           },
           {
@@ -88,7 +88,7 @@
       },
       {
         "tableName": "top_rated",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genreId` TEXT NOT NULL DEFAULT '', `release_date` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genreId` TEXT NOT NULL DEFAULT '', `release_date` TEXT DEFAULT '', PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -149,7 +149,7 @@
             "fieldPath": "release_date",
             "columnName": "release_date",
             "affinity": "TEXT",
-            "notNull": true,
+            "notNull": false,
             "defaultValue": "''"
           }
         ],
@@ -164,7 +164,7 @@
       },
       {
         "tableName": "popular",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genreId` TEXT NOT NULL DEFAULT '', `release_date` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genreId` TEXT NOT NULL DEFAULT '', `release_date` TEXT DEFAULT '', PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -225,7 +225,7 @@
             "fieldPath": "release_date",
             "columnName": "release_date",
             "affinity": "TEXT",
-            "notNull": true,
+            "notNull": false,
             "defaultValue": "''"
           }
         ],
@@ -868,7 +868,7 @@
       },
       {
         "tableName": "movies_by_genre",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genre` TEXT NOT NULL DEFAULT '', `release_date` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `adult` INTEGER NOT NULL, `backdrop_path` TEXT, `overview` TEXT NOT NULL, `popularity` REAL NOT NULL, `poster_path` TEXT, `title` TEXT NOT NULL, `vote_average` REAL NOT NULL, `genre` TEXT NOT NULL DEFAULT '', `release_date` TEXT DEFAULT '', PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -929,7 +929,7 @@
             "fieldPath": "release_date",
             "columnName": "release_date",
             "affinity": "TEXT",
-            "notNull": true,
+            "notNull": false,
             "defaultValue": "''"
           }
         ],
@@ -1070,7 +1070,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '371752fe44eb694123272df9c31d8747')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90640285d10e9b1020ca3b0f767ff352')"
     ]
   }
 }

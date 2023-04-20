@@ -10,7 +10,7 @@ data class TopRatedResultEntity(
     @PrimaryKey
     val id: Int,
     val adult: Boolean,
-    val backdrop_path: String?=null,
+    val backdrop_path: String? = null,
     val overview: String,
     val popularity: Double,
     val poster_path: String?,
@@ -19,7 +19,7 @@ data class TopRatedResultEntity(
     @ColumnInfo(defaultValue = "")
     val genreId: List<Int>,
     @ColumnInfo(defaultValue = "")
-    val release_date: String
+    val release_date: String? = null
 ) {
     internal companion object {
         fun MovieResults.toTopRatedEntity() = TopRatedResultEntity(

@@ -19,7 +19,7 @@ data class NowPlayingResultEntity(
     @ColumnInfo(defaultValue = "")
     val genre: List<Int>,
     @ColumnInfo(defaultValue = "")
-    val release_date: String,
+    val release_date: String?=null,
     @ColumnInfo(name = "page")
     var page: Int?=null,
 ) {

@@ -1,5 +1,6 @@
 package com.vibetv.core.data
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.DeleteTable
 import androidx.room.RoomDatabase
@@ -25,6 +26,7 @@ import com.vibetv.core.data.entities.MovieRemoteKeyEntity
 import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
+import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import com.vibetv.core.data.entities.season.EpisodeEntity
 import com.vibetv.core.data.entities.season.SeasonDetailsEntity
@@ -50,14 +52,16 @@ import com.vibetv.core.data.entities.shows.TopRatedShowsEntity
         MovieByGenreEntity::class,
         EpisodeEntity::class,
         MovieRemoteKeyEntity::class,
+        TrendingEntity::class
 
 
     ],
-    version = 1,
-    /* autoMigrations = [
+    version = 4,
+     autoMigrations = [
          AutoMigration(from = 1, to = 2),
-
-     ]*/
+         AutoMigration(from = 2, to = 3),
+         AutoMigration(from = 3, to = 4),
+     ]
 )
 
 @TypeConverters(

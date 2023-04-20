@@ -9,48 +9,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.vibetv.R
-import com.vibetv.core.data.entities.PopularResultEntity
+import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.designSystem.components.MovieCard
 import com.vibetv.designSystem.components.MovieHeader
 
 @Composable
-fun PopularMovies(
+fun Trending(
     modifier: Modifier,
-    popularResponse: List<PopularResultEntity>? = emptyList(),
     onMovieDetailsClick: (Int) -> Unit,
+    trendingList: List<TrendingEntity>? = emptyList(),
     navigateToMovieGrid: () -> Unit,
 ) {
     Column(modifier = modifier) {
         MovieHeader(
             modifier = modifier,
-            title = R.string.home_popular_movies_title,
-            actionText = R.string.home_popular_movies_action,
+            title = R.string.home_trending_title,
             onMovieGridClicked = navigateToMovieGrid,
+            actionText = null
         )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier.padding(
-                start = 8.dp,
-                end = 8.dp
-            )
+            modifier = modifier.padding(start = 8.dp, end = 8.dp)
 
         ) {
-            items(popularResponse.orEmpty()) { popularMoviesItem ->
+            items(trendingList.orEmpty()) { trending ->
                 MovieCard(
                     modifier = modifier,
-                    poster = popularMoviesItem.poster_path.orEmpty(),
-                    voteAverage = popularMoviesItem.vote_average,
-                    id = popularMoviesItem.id,
+                    poster = trending.poster_path.orEmpty(),
+                    voteAverage = trending.vote_average,
+                    id = trending.id,
                     onClick = {
-                        onMovieDetailsClick(popularMoviesItem.id)
+                        onMovieDetailsClick(trending.id)
                     }
                 )
-
             }
-
         }
     }
-
-
 }

@@ -5,37 +5,27 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.vibetv.core.api.VibeApi
 import com.vibetv.core.data.AppDatabase
 import com.vibetv.core.data.dao.MovieDao
 import com.vibetv.core.data.entities.MovieRemoteKeyEntity
-import com.vibetv.core.data.entities.NowPlayingResultEntity
-import com.vibetv.core.data.entities.NowPlayingResultEntity.Companion.toNowPlayingEntity
-import com.vibetv.core.repository.MovieRepository
+import com.vibetv.core.data.entities.TrendingEntity
+import com.vibetv.core.data.entities.TrendingEntity.Companion.toTrendingEntity
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class MoviesRemoteMediator @Inject internal constructor(
+class TrendingMoviesRemoteMediator @Inject internal constructor(
     private val db: AppDatabase,
     private val movieDao: MovieDao,
-    private val repository: MovieRepository,
-) : RemoteMediator<Int, NowPlayingResultEntity>() {
+    private val api: VibeApi,
+) : RemoteMediator<Int, TrendingEntity>() {
     private val remoteKeyDao = db.movieRemoteKeyDao()
-    /* override suspend fun initialize(): InitializeAction {
-         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
-         return if (System.currentTimeMillis() - (db.movieRemoteKeyDao().getCreationTime()
-                 ?: 0) < cacheTimeout
-         ) {
-             InitializeAction.SKIP_INITIAL_REFRESH
-         } else {
-             InitializeAction.LAUNCH_INITIAL_REFRESH
-         }
-     }*/
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, NowPlayingResultEntity>
+        state: PagingState<Int, TrendingEntity>
     ): MediatorResult {
         return try {
             val pageIndex: Int = when (loadType) {
@@ -50,20 +40,24 @@ class MoviesRemoteMediator @Inject internal constructor(
                 }
 
             }
-            val response = repository.getNowPlaying(pageIndex, state.config.pageSize)
-            val nextPage =
-                if (response.total_pages == 0 || pageIndex + 1 == response.total_pages) null else pageIndex + 1
+
+            val response = api.getTrendingMovies(mediaType = "movie", timeWindow = "day")
+
+            val trendingMovies = response.results.map { it.toTrendingEntity() }
+
+              val nextPage =
+                if (response.total_pages == 1 || pageIndex + 1 == response.total_pages) null else pageIndex + 1
 
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     remoteKeyDao.delete()
-                    movieDao.clearNowPlaying()
+                    movieDao.clearTrending()
                 }
 
                 remoteKeyDao.insertOrReplace(MovieRemoteKeyEntity(nextPage = nextPage))
 
                 db.movieDao()
-                    .insertAll(response.results.map { it.toNowPlayingEntity() })
+                    .insertReplace(trendingMovies)
             }
 
             MediatorResult.Success(endOfPaginationReached = nextPage == null)

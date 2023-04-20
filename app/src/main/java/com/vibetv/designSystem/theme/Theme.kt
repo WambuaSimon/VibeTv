@@ -14,6 +14,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -143,7 +144,7 @@ val DarkAndroidGradientColors = GradientColors(container = Color.Black)
 val LightAndroidBackgroundTheme = BackgroundTheme(color = DarkGreenGray95)
 val DarkAndroidBackgroundTheme = BackgroundTheme(color = Color.Black)
 
-
+val LocalIconColor = compositionLocalOf { Color.Unspecified }
 @Composable
 fun VibeTVTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

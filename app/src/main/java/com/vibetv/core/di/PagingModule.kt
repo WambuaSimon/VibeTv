@@ -4,8 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.vibetv.core.data.dao.MovieDao
-import com.vibetv.core.data.entities.NowPlayingResultEntity
-import com.vibetv.core.paging.MoviesRemoteMediator
+import com.vibetv.core.data.entities.TrendingEntity
+import com.vibetv.core.paging.TrendingMoviesRemoteMediator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,11 +18,11 @@ object PagingModule {
     @OptIn(ExperimentalPagingApi::class)
     @ViewModelScoped
     @Provides
-    internal fun provideNowPlayingPager(
-        remoteMediator: MoviesRemoteMediator,
+    internal fun provideTrendingPager(
+        remoteMediator: TrendingMoviesRemoteMediator,
         moviesDao: MovieDao
-    ): Pager<Int, NowPlayingResultEntity> = Pager(
-        config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 10),
+    ): Pager<Int, TrendingEntity> = Pager(
+        config = PagingConfig(pageSize = 20, initialLoadSize = 20),
         remoteMediator = remoteMediator
-    ){ moviesDao.nowPlaying() }
+    ) { moviesDao.trending() }
 }

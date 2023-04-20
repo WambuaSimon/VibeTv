@@ -16,6 +16,8 @@ import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity.Companion.toPopularEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity.Companion.toTopRatedEntity
+import com.vibetv.core.data.entities.TrendingEntity
+import com.vibetv.core.data.entities.TrendingEntity.Companion.toTrendingEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity.Companion.toMovieDetailsEntity
 import com.vibetv.core.model.movie_response.MovieResponse
@@ -65,6 +67,30 @@ class MovieRepository @Inject constructor(
             }
         )
 
+    }
+
+    fun getTrendingMovies(
+        mediaType: String,
+        timeWindow: String
+    ): Flow<Resource<List<TrendingEntity>>> {
+        return networkBoundResource(
+            query = { dao.getTrending() },
+            fetch = {
+                runCatching {
+                    api.getTrending(mediaType, timeWindow)
+                }.fold(
+                    onSuccess = { NetworkResponse.Success(it) },
+                    onFailure = { NetworkResponse.Error.UnknownError(it) }
+                )
+            },
+            networkStatus = context.networkStatus(),
+
+            saveRemoteData = { response ->
+                val trending = response.results.map { it.toTrendingEntity() }
+                dao.replaceTrending(trending)
+
+            }
+        )
     }
 
     /* @OptIn(ExperimentalPagingApi::class)

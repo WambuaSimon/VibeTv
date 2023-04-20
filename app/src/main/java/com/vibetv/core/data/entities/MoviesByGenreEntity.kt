@@ -19,7 +19,7 @@ data class MovieByGenreEntity(
     @ColumnInfo(defaultValue = "")
     val genre: List<Int>,
     @ColumnInfo(defaultValue = "")
-    val release_date: String
+    val release_date: String?=null
 ) {
     internal companion object {
         fun MovieResults.toEntity() = MovieByGenreEntity(

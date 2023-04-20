@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    val repo: MovieRepository
+    val repo: MovieRepository,
 ) : ViewModel() {
     val allMoviesModel: AllMoviesModel = AllMoviesModel()
 

@@ -11,11 +11,13 @@
     <string name="home_now_showing_title">Now Showing</string>
     <string name="home_now_showing_action">More</string>
     <string name="home_top_rated_title">Our hot picks 🔥</string>
+    <string name="home_trending_title">Trending</string>
     <string name="home_top_rated_action">More</string>
     <string name="home_popular_movies_title">Popular movies</string>
-    <string name="home_popular_movies_action">All Collections</string>
+    <string name="home_popular_movies_action">More</string>
     <string name="error_no_internet">No internet connection</string>
     <string name="home_fallback_error_message">Could not load movies</string>
+    <string name="error_retry_button">Retry</string>
     <string name="home_fallback_error_button">Retry</string>
     <string name="home_movie_details">Movie Details</string>
     <string name="shows_airing_now">Now Airing</string>

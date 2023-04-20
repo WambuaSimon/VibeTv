@@ -23,7 +23,6 @@ import androidx.compose.material.icons.rounded.StarHalf
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -49,8 +48,6 @@ import com.vibetv.common.shimmerBrush
 import com.vibetv.common.utils.Resource
 import com.vibetv.presentation.movies.components.MovieGenre
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesScreen(
     modifier: Modifier = Modifier,
@@ -79,7 +76,7 @@ fun MoviesScreen(
     errorMessage?.let {
         LaunchedEffect(it) {
             snackbarHostState
-                .showSnackbar(message = it, duration = SnackbarDuration.Long)
+                .showSnackbar(message = it, duration = SnackbarDuration.Indefinite)
         }
     }
 

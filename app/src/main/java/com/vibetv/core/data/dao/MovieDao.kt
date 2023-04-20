@@ -12,6 +12,7 @@ import com.vibetv.core.data.entities.MovieByGenreEntity
 import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
+import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -35,6 +36,40 @@ interface MovieDao {
         clearNowPlaying()
         insertAll(nowPlayingResult)
     }
+
+    //trending
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReplace(trending: List<TrendingEntity>)
+
+    @Query("SELECT * FROM trending")
+    fun trending(): PagingSource<Int, TrendingEntity>
+
+    @Query("DELETE FROM trending")
+    suspend fun clearTrending()
+
+    @Transaction
+    suspend fun replaceTrending(trending: List<TrendingEntity>){
+        clearTrending()
+        insertReplace(trending)
+    }
+
+    //unpaged trending
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(trending: List<TrendingEntity>)
+
+    @Query("SELECT * FROM trending")
+    fun getTrending(): Flow<List<TrendingEntity>>
+
+    @Query("DELETE FROM trending")
+    suspend fun clear()
+
+    @Transaction
+    suspend fun replace(trending: List<TrendingEntity>){
+        clearTrending()
+        insert(trending)
+    }
+
+
 
     // Popular
     @Insert(onConflict = OnConflictStrategy.REPLACE)

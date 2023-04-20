@@ -13,5 +13,5 @@ data class MovieResults(
     val title: String,
     val vote_average: Double,
     val genre_ids: List<Int>,
-    val release_date: String
+    val release_date: String?=null
 )
