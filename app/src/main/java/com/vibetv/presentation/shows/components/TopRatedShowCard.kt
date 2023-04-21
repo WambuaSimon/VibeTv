@@ -35,15 +35,16 @@ import com.vibetv.designSystem.components.MovieHeader
 fun TopRatedShowCard(
     modifier: Modifier,
     result: List<TopRatedShowsEntity>,
-    onNavigateToShowDetails: (Int) -> Unit
-
+    onNavigateToShowDetails: (Int) -> Unit,
+    onMoreClicked: (String) -> Unit
 ) {
     Column {
 
         MovieHeader(
             modifier = modifier,
             title = R.string.shows_top_rated,
-            actionText = R.string.home_now_showing_action
+            actionText = R.string.home_now_showing_action,
+            onMovieGridClicked = onMoreClicked
         )
 
         LazyRow(

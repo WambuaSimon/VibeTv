@@ -18,7 +18,7 @@ fun NowPlaying(
     modifier: Modifier,
     nowPlaying: List<NowPlayingResultEntity>? = emptyList(),
     onMovieDetailsClick: (Int) -> Unit,
-    navigateToMovieGrid: () -> Unit,
+    navigateToMovieGrid: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         MovieHeader(

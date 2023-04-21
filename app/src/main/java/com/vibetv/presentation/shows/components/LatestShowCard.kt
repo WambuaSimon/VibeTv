@@ -35,13 +35,14 @@ import com.vibetv.designSystem.components.MovieHeader
 fun LatestShowCard(
     modifier: Modifier,
     result: List<LatestShowEntity>,
-
+    onMoreClicked: (String) -> Unit
     ) {
     Column {
         MovieHeader(
             modifier = modifier,
             title = R.string.shows_latest,
-            actionText = R.string.home_now_showing_action
+            actionText = R.string.home_now_showing_action,
+            onMovieGridClicked = onMoreClicked
         )
 
         LazyRow(

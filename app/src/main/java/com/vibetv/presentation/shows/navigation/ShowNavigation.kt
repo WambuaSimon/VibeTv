@@ -17,7 +17,8 @@ fun NavGraphBuilder.showsScreen(
         val showViewModel: TvShowViewModel = hiltViewModel()
         TvShowsScreen(
             model = showViewModel.model,
-            onNavigateToShowDetails = onNavigateToShowDetails
+            onNavigateToShowDetails = onNavigateToShowDetails,
+            onMoreClicked = {}
         )
     }
 }

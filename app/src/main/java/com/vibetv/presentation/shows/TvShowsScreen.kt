@@ -13,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -34,7 +33,8 @@ import com.vibetv.presentation.shows.components.TopRatedShowCard
 fun TvShowsScreen(
     modifier: Modifier = Modifier,
     model: ShowModel,
-    onNavigateToShowDetails: (Int) -> Unit
+    onNavigateToShowDetails: (Int) -> Unit,
+    onMoreClicked: (String) -> Unit,
 ) {
     val state = model.state
     val errorState = model.error
@@ -90,19 +90,22 @@ fun TvShowsScreen(
                     AiringShowCard(
                         modifier = modifier,
                         result = result?.airingToday.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails
+                        onNavigateToShowDetails = onNavigateToShowDetails,
+                        onMoreClicked =  onMoreClicked
                     )
                     // LatestShowCard(modifier = modifier, result = result?.latestShow.orEmpty())
                     TopRatedShowCard(
                         modifier = modifier,
                         result = result?.topRatedShow.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails
+                        onNavigateToShowDetails = onNavigateToShowDetails,
+                        onMoreClicked = onMoreClicked
                     )
 
                     PopularShowCard(
                         modifier = modifier,
                         result = result?.popularShow.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails
+                        onNavigateToShowDetails = onNavigateToShowDetails,
+                        onMoreClicked = onMoreClicked
                     )
 
                 }

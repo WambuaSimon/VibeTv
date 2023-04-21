@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -14,9 +15,10 @@ fun MovieHeader(
     modifier: Modifier,
     @StringRes title: Int,
     @StringRes actionText: Int? = null,
-    onMovieGridClicked: (() -> Unit)? = null,
+    onMovieGridClicked: (String) -> Unit,
     action: @Composable (() -> Unit)? = null,
 ) {
+    val context = LocalContext.current
     ListItem(
         modifier = modifier,
         headlineText = {
@@ -27,11 +29,7 @@ fun MovieHeader(
         },
         trailingContent = {
             TextButton(
-                onClick = {
-                    if (onMovieGridClicked != null) {
-                        onMovieGridClicked()
-                    }
-                }
+                onClick = { onMovieGridClicked(context.getString(title)) }
 
             ) {
                 if (actionText != null)

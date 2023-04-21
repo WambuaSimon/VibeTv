@@ -27,12 +27,13 @@ fun MovieGridScreen(
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
     onMovieDetailsClick: (Int) -> Unit,
+    model: MovieGridModel
 ) {
     val listState = rememberLazyGridState()
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                Text(text = "Now Playing")
+                Text(text = model.title)
             },
                 navigationIcon = {
                     IconButton(onClick = { onNavigateUp() }) {

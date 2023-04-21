@@ -36,13 +36,15 @@ import com.vibetv.designSystem.components.MovieHeader
 fun PopularShowCard(
     modifier: Modifier,
     result: List<PopularShowsEntity>,
-    onNavigateToShowDetails: (Int) -> Unit
+    onNavigateToShowDetails: (Int) -> Unit,
+    onMoreClicked: (String) -> Unit
     ) {
     Column {
         MovieHeader(
             modifier = modifier,
             title = R.string.shows_popular,
-            actionText = R.string.home_now_showing_action
+            actionText = R.string.home_now_showing_action,
+            onMovieGridClicked = onMoreClicked
         )
 
         LazyRow(

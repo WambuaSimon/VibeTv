@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
-import com.vibetv.presentation.home.movie_grid.navigation.movieGridGraph
+import com.vibetv.presentation.home.movie_grid.navigation.movieGridScreen
 import com.vibetv.presentation.home.movie_grid.navigation.navigateToMovieGrid
 import com.vibetv.presentation.movie_details.navigation.movieDetailsGraph
 import com.vibetv.presentation.movie_details.navigation.navigateToMovieDetails
@@ -28,10 +28,13 @@ fun NavGraphBuilder.homeGraph(
                 navController.navigateToMovieDetails(it)
             },
             onNavigateToMovieGrid = {
-                navController.navigateToMovieGrid()
+                navController.navigateToMovieGrid(it)
             }
         )
         movieDetailsGraph(navController)
-        movieGridGraph(navController)
+        movieGridScreen(
+            onNavigateUp = navController::navigateUp,
+            onMovieDetailsClick = {}
+        )
     }
 }

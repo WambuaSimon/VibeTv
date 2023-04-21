@@ -35,7 +35,8 @@ import com.vibetv.designSystem.components.MovieHeader
 fun AiringShowCard(
     modifier: Modifier,
     result: List<AiringTodayEntity>,
-    onNavigateToShowDetails: (Int) -> Unit
+    onNavigateToShowDetails: (Int) -> Unit,
+    onMoreClicked: (String) -> Unit
 
 ) {
     Column {
@@ -43,7 +44,8 @@ fun AiringShowCard(
         MovieHeader(
             modifier = modifier,
             title = R.string.shows_airing_now,
-            actionText = R.string.home_now_showing_action
+            actionText = R.string.home_now_showing_action,
+         onMovieGridClicked = onMoreClicked
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
