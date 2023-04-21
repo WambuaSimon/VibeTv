@@ -15,7 +15,7 @@ fun MovieHeader(
     modifier: Modifier,
     @StringRes title: Int,
     @StringRes actionText: Int? = null,
-    onMovieGridClicked: (String) -> Unit,
+    onMovieGridClicked: (String,String?) -> Unit,
     action: @Composable (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -29,7 +29,7 @@ fun MovieHeader(
         },
         trailingContent = {
             TextButton(
-                onClick = { onMovieGridClicked(context.getString(title)) }
+                onClick = { onMovieGridClicked(context.getString(title),"") }
 
             ) {
                 if (actionText != null)

@@ -35,7 +35,7 @@ import com.vibetv.designSystem.components.MovieHeader
 fun LatestShowCard(
     modifier: Modifier,
     result: List<LatestShowEntity>,
-    onMoreClicked: (String) -> Unit
+    onMoreClicked: (String,String?) -> Unit
     ) {
     Column {
         MovieHeader(

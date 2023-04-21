@@ -18,7 +18,7 @@ fun NavGraphBuilder.showsScreen(
         TvShowsScreen(
             model = showViewModel.model,
             onNavigateToShowDetails = onNavigateToShowDetails,
-            onMoreClicked = {}
+            onMoreClicked = {_,_ ->}
         )
     }
 }

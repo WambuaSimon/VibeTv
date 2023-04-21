@@ -8,12 +8,12 @@ import com.google.accompanist.navigation.animation.composable
 import com.vibetv.presentation.home.HomeScreen
 import com.vibetv.presentation.home.HomeViewModel
 
-const val homeNavigationRoute = "home_route/{title}"
+const val homeNavigationRoute = "home_route"
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.homeScreen(
     onNavigateToMovieDetails: (Int) -> Unit,
-    onNavigateToMovieGrid: (String) -> Unit
+    onNavigateToMovieGrid: (String,String?) -> Unit
 ) {
     composable(
         route = homeNavigationRoute,

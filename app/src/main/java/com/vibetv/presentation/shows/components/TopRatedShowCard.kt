@@ -36,7 +36,7 @@ fun TopRatedShowCard(
     modifier: Modifier,
     result: List<TopRatedShowsEntity>,
     onNavigateToShowDetails: (Int) -> Unit,
-    onMoreClicked: (String) -> Unit
+    onMoreClicked: (String,String?) -> Unit
 ) {
     Column {
 

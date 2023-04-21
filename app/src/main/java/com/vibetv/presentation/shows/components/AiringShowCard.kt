@@ -36,7 +36,7 @@ fun AiringShowCard(
     modifier: Modifier,
     result: List<AiringTodayEntity>,
     onNavigateToShowDetails: (Int) -> Unit,
-    onMoreClicked: (String) -> Unit
+    onMoreClicked: (String,String?) -> Unit
 
 ) {
     Column {

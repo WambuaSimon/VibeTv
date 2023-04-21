@@ -40,7 +40,7 @@ fun Trending(
     modifier: Modifier,
     onMovieDetailsClick: (Int) -> Unit,
     trendingList: List<TrendingEntity>? = emptyList(),
-    navigateToMovieGrid: (String) -> Unit,
+    navigateToMovieGrid: (String,String?) -> Unit,
     homeModel: HomeModel
 
 ) {
@@ -99,7 +99,7 @@ fun Trending(
             }
             Spacer(modifier = modifier.weight(1f))
             TextButton(
-                onClick = { navigateToMovieGrid(context.getString(R.string.home_trending_title)) }
+                onClick = { navigateToMovieGrid(context.getString(R.string.home_trending_title),selectedOptionText.name) }
 
             ) {
                 Text(

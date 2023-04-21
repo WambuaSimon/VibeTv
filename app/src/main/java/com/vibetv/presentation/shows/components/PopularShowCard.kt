@@ -37,7 +37,7 @@ fun PopularShowCard(
     modifier: Modifier,
     result: List<PopularShowsEntity>,
     onNavigateToShowDetails: (Int) -> Unit,
-    onMoreClicked: (String) -> Unit
+    onMoreClicked: (String,String?) -> Unit
     ) {
     Column {
         MovieHeader(

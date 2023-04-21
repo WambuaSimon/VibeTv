@@ -39,7 +39,7 @@ internal fun HomeScreen(
     modifier: Modifier = Modifier,
     state: Resource<HomePageState>,
     navigateToMovieDetails: (id: Int) -> Unit,
-    navigateToMovieGrid: (String) -> Unit,
+    navigateToMovieGrid: (String, String?) -> Unit,
     onRefreshClick: () -> Unit,
     homeModel: HomeModel,
 ) {

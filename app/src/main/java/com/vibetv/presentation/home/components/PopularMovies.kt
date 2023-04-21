@@ -18,7 +18,7 @@ fun PopularMovies(
     modifier: Modifier,
     popularResponse: List<PopularResultEntity>? = emptyList(),
     onMovieDetailsClick: (Int) -> Unit,
-    navigateToMovieGrid: (String) -> Unit,
+    navigateToMovieGrid: (String, String?) -> Unit,
 ) {
     Column(modifier = modifier) {
         MovieHeader(

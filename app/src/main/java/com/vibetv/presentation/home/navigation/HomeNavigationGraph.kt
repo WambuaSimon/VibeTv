@@ -27,8 +27,11 @@ fun NavGraphBuilder.homeGraph(
             onNavigateToMovieDetails = {
                 navController.navigateToMovieDetails(it)
             },
-            onNavigateToMovieGrid = {
-                navController.navigateToMovieGrid(it)
+            onNavigateToMovieGrid = { title, time ->
+                navController.navigateToMovieGrid(
+                    title = title,
+                    time = time.orEmpty()
+                )
             }
         )
         movieDetailsGraph(navController)

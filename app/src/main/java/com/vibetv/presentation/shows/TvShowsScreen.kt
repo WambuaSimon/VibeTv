@@ -34,7 +34,7 @@ fun TvShowsScreen(
     modifier: Modifier = Modifier,
     model: ShowModel,
     onNavigateToShowDetails: (Int) -> Unit,
-    onMoreClicked: (String) -> Unit,
+    onMoreClicked: (String,String?) -> Unit,
 ) {
     val state = model.state
     val errorState = model.error

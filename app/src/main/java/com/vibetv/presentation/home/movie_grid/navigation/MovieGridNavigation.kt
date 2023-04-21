@@ -10,7 +10,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.vibetv.presentation.home.movie_grid.MovieGridScreen
 import com.vibetv.presentation.home.movie_grid.MovieGridViewModel
 
-internal const val MovieGridRoutePattern = "grid/{title}"
+internal const val MovieGridRoutePattern = "grid/{title}?time={time}"
 
 @OptIn(ExperimentalAnimationApi::class)
 internal fun NavGraphBuilder.movieGridScreen(
@@ -19,20 +19,24 @@ internal fun NavGraphBuilder.movieGridScreen(
 ) {
     composable(MovieGridRoutePattern,
         arguments = listOf(
-            navArgument("title") { type = NavType.StringType }
+            navArgument("title") { type = NavType.StringType },
+            navArgument("time") { defaultValue = "day" }
         )
     ) {
         val viewModel: MovieGridViewModel = hiltViewModel()
         MovieGridScreen(
             onNavigateUp = onNavigateUp,
-            nowPlaying = emptyList(),
             onMovieDetailsClick = onMovieDetailsClick,
-            model = viewModel.model
-
+            model = viewModel.model,
+            title = viewModel.model.title
         )
     }
 }
 
 fun NavController.navigateToMovieGrid(
-    title: String
-) = navigate(MovieGridRoutePattern.replace("{title}", title))
+    title: String,
+    time: String,
+) = navigate(MovieGridRoutePattern
+    .replace("{title}", title)
+    .replace("{time}", time)
+)

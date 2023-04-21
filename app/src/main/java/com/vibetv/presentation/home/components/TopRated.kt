@@ -18,7 +18,7 @@ fun TopRated(
     modifier: Modifier,
     topRatedResponse: List<TopRatedResultEntity>? = emptyList(),
     onMovieDetailsClick: (Int) -> Unit,
-    navigateToMovieGrid: (String) -> Unit,
+    navigateToMovieGrid: (String,String?) -> Unit,
 ) {
     Column(modifier = modifier) {
         MovieHeader(
