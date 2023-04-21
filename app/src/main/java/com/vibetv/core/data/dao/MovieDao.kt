@@ -12,6 +12,7 @@ import com.vibetv.core.data.entities.MovieByGenreEntity
 import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
+import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,10 +20,13 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
     //Now Playing
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNowPlaying(nowPlayingResult: List<NowPlayingResultEntity>)
+    suspend fun insertAll(playing: List<NowPlayingResultEntity>)
 
     @Query("SELECT * FROM now_playing")
     fun nowPlaying(): PagingSource< Int, NowPlayingResultEntity>
+
+    @Query("SELECT * FROM now_playing")
+    fun nowPlayingHome(): Flow<List<NowPlayingResultEntity>>
 
     @Query("DELETE FROM now_playing")
     suspend fun clearNowPlaying()
@@ -30,8 +34,42 @@ interface MovieDao {
     @Transaction
     suspend fun replaceNowPlaying(nowPlayingResult: List<NowPlayingResultEntity>) {
         clearNowPlaying()
-        insertNowPlaying(nowPlayingResult)
+        insertAll(nowPlayingResult)
     }
+
+    //trending
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReplace(trending: List<TrendingEntity>)
+
+    @Query("SELECT * FROM trending")
+    fun trending(): PagingSource<Int, TrendingEntity>
+
+    @Query("DELETE FROM trending")
+    suspend fun clearTrending()
+
+    @Transaction
+    suspend fun replaceTrending(trending: List<TrendingEntity>){
+        clearTrending()
+        insertReplace(trending)
+    }
+
+    //unpaged trending
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(trending: List<TrendingEntity>)
+
+    @Query("SELECT * FROM trending")
+    fun getTrending(): Flow<List<TrendingEntity>>
+
+    @Query("DELETE FROM trending")
+    suspend fun clear()
+
+    @Transaction
+    suspend fun replace(trending: List<TrendingEntity>){
+        clearTrending()
+        insert(trending)
+    }
+
+
 
     // Popular
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -53,7 +91,7 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTopRated(topRatedResult: List<TopRatedResultEntity>)
 
-    @Query("SELECT * FROM top_rated")
+    @Query("SELECT * FROM top_rated ORDER BY vote_average Desc")
     fun topRated(): Flow<List<TopRatedResultEntity>>
 
     @Query("DELETE FROM top_rated")

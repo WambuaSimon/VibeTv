@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class Paged<T>(
     val page: Int,
     val total_pages: Int,
+    val total_results: Int,
     val results: T,
 )

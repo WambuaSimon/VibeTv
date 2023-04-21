@@ -9,6 +9,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("org.jlleitschuh.gradle.ktlint")
     id("com.diffplug.spotless")
+
 }
 
 subprojects {
@@ -50,7 +51,7 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
 
-        /*create("shared-debug") {
+       /* create("shared-debug") {
             storeFile = rootProject.file("debug-keystore.jks")
             storePassword = "android"
             keyAlias = "androiddebugkey"
@@ -71,7 +72,7 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
             isDebuggable = true
-            //signingConfig = signingConfigs.getByName("shared-debug")
+          //  signingConfig = signingConfigs.getByName("shared-debug")
         }
 
     }

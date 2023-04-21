@@ -1,12 +1,11 @@
 package com.vibetv.core.data.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.vibetv.core.model.movie_response.MovieResults
 
-@Entity(tableName = "popular")
-data class PopularResultEntity(
+@Entity(tableName = "trending")
+data class TrendingEntity(
     @PrimaryKey
     val id: Int,
     val adult: Boolean,
@@ -16,13 +15,11 @@ data class PopularResultEntity(
     val poster_path: String?,
     val title: String,
     val vote_average: Double,
-    @ColumnInfo(defaultValue = "")
     val genreId: List<Int>,
-    @ColumnInfo(defaultValue = "")
     val release_date: String? = null
-) {
-    internal companion object {
-        fun MovieResults.toPopularEntity() = PopularResultEntity(
+){
+    internal companion object{
+        fun MovieResults.toTrendingEntity() = TrendingEntity(
             id = id,
             adult = adult,
             backdrop_path = backdrop_path,

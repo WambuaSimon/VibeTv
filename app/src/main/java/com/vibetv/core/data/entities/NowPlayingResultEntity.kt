@@ -13,13 +13,13 @@ data class NowPlayingResultEntity(
     val backdrop_path: String?=null,
     val overview: String,
     val popularity: Double,
-    val poster_path: String,
+    val poster_path: String?,
     val title: String,
     val vote_average: Double,
     @ColumnInfo(defaultValue = "")
     val genre: List<Int>,
     @ColumnInfo(defaultValue = "")
-    val release_date: String,
+    val release_date: String?=null,
     @ColumnInfo(name = "page")
     var page: Int?=null,
 ) {
