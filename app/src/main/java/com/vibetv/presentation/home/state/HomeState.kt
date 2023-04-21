@@ -8,15 +8,13 @@ import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.TopRatedResultEntity
 import com.vibetv.core.data.entities.TrendingEntity
-
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class HomeModel(
-    timeWindow: String = "day",
     error: Resource.Error<Unit>? = null,
 ) {
-    var timeWindow: String by mutableStateOf(timeWindow)
+    val selectedFilterOption = MutableStateFlow(TimeWindow.day)
     var error: Resource.Error<Unit>? by mutableStateOf(error)
-
 }
 
 data class HomePageState(
@@ -25,3 +23,9 @@ data class HomePageState(
     val topRated: List<TopRatedResultEntity>? = emptyList(),
     val trending: List<TrendingEntity>? = emptyList()
 )
+
+
+enum class TimeWindow {
+    day,
+    week
+}

@@ -14,10 +14,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +25,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.vibetv.R
 import com.vibetv.common.utils.Resource
-import com.vibetv.designSystem.components.MovieHeader
 import com.vibetv.designSystem.theme.ShowErrorSnackbar
 import com.vibetv.presentation.home.components.NowPlaying
 import com.vibetv.presentation.home.components.PopularMovies
@@ -77,9 +74,6 @@ internal fun HomeScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { contentPadding ->
-        val options = listOf("Today", "This Week")
-        var expanded by remember { mutableStateOf(false) }
-        var selectedOptionText by remember { mutableStateOf(options[0]) }
         if (state is Resource.Loading) {
             Box(
                 modifier = Modifier
@@ -100,24 +94,20 @@ internal fun HomeScreen(
                     .fillMaxWidth()
                     .padding(contentPadding)
             ) {
-                MovieHeader(
-                    modifier = modifier,
-                    title = R.string.home_top_rated_title,
-                    onMovieGridClicked = navigateToMovieGrid,
-                    actionText = null
-                )
 
                 TopRated(
                     modifier = modifier,
                     topRatedResponse = result.topRated,
-                    onMovieDetailsClick = navigateToMovieDetails
+                    onMovieDetailsClick = navigateToMovieDetails,
+                    navigateToMovieGrid = navigateToMovieGrid
                 )
 
                 Trending(
                     modifier = modifier,
                     onMovieDetailsClick = navigateToMovieDetails,
                     trendingList = result.trending,
-                    navigateToMovieGrid = navigateToMovieGrid
+                    navigateToMovieGrid = navigateToMovieGrid,
+                    homeModel = homeModel
                 )
 
 

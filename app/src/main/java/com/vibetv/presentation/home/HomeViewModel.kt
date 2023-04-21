@@ -25,19 +25,20 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     repo: MovieRepository,
 ) : ViewModel() {
-
     val homeModel: HomeModel = HomeModel()
 
     private val refresh = MutableStateFlow(0)
 
     val state: StateFlow<Resource<HomePageState>> = refresh
+        .flatMapLatest { homeModel.selectedFilterOption }
         .flatMapLatest {
             combineTransform(
                 repo.getTopRated(),
-                repo.getTrendingMovies("", ""),
+                repo.getTrendingMovies(it.name),
                 repo.getNowPlaying(),
-                repo.getPopular()
-            ) { top, trending, playing, popular ->
+                repo.getPopular(),
+
+                ) { top, trending, playing, popular ->
                 when {
                     top is Resource.Success || trending is Resource.Success || playing is Resource.Success || popular is Resource.Success -> {
                         this.emit(

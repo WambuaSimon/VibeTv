@@ -3,9 +3,7 @@ package com.vibetv.core.repository
 import android.content.Context
 import com.vibetv.common.utils.Resource
 import com.vibetv.core.api.VibeApi
-import com.vibetv.core.data.AppDatabase
 import com.vibetv.core.data.dao.MovieDao
-import com.vibetv.core.data.entities.AllMoviesResult
 import com.vibetv.core.data.entities.GenreListEntity
 import com.vibetv.core.data.entities.GenreListEntity.Companion.toGenreEntity
 import com.vibetv.core.data.entities.MovieByGenreEntity
@@ -20,14 +18,11 @@ import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.core.data.entities.TrendingEntity.Companion.toTrendingEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity
 import com.vibetv.core.data.entities.movie_details.MovieDetailsResponseEntity.Companion.toMovieDetailsEntity
-import com.vibetv.core.model.movie_response.MovieResponse
 import com.vibetv.core.network.NetworkResponse
 import com.vibetv.core.network.networkBoundResource
 import com.vibetv.core.network.networkStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
@@ -35,17 +30,7 @@ class MovieRepository @Inject constructor(
     @ApplicationContext
     private val context: Context,
     private val dao: MovieDao,
-    private val db: AppDatabase,
 ) {
-
-    suspend fun getNowPlaying(
-        pageIndex: Int,
-        pageSize: Int
-    ): MovieResponse {
-        return api.getNowPlaying(pageIndex)
-    }
-
-    private val moviesRemoteKeyDao = db.movieRemoteKeyDao()
     fun getNowPlaying(): Flow<Resource<List<NowPlayingResultEntity>>> {
         return networkBoundResource(
             query = { dao.nowPlayingHome() },
@@ -70,14 +55,13 @@ class MovieRepository @Inject constructor(
     }
 
     fun getTrendingMovies(
-        mediaType: String,
         timeWindow: String
     ): Flow<Resource<List<TrendingEntity>>> {
         return networkBoundResource(
             query = { dao.getTrending() },
             fetch = {
                 runCatching {
-                    api.getTrending(mediaType, timeWindow)
+                    api.getTrending(timeWindow)
                 }.fold(
                     onSuccess = { NetworkResponse.Success(it) },
                     onFailure = { NetworkResponse.Error.UnknownError(it) }
@@ -92,21 +76,6 @@ class MovieRepository @Inject constructor(
             }
         )
     }
-
-    /* @OptIn(ExperimentalPagingApi::class)
-     fun getNowPlaying(): Flow<PagingData<NowPlayingResultEntity>> {
-         val pagingSourceFactory = { dao.nowPlaying()}
-         return Pager(
-             config = PagingConfig(pageSize = 20, prefetchDistance = 10, initialLoadSize = 20),
-             remoteMediator = MoviesRemoteMediator(
-                 api = api,
-                 db = db
-             ),
-             pagingSourceFactory = pagingSourceFactory
-         ).flow
-     }
- */
-
 
     fun getTopRated(): Flow<Resource<List<TopRatedResultEntity>>> = networkBoundResource(
         fetch = { api.getTopRated() },
@@ -145,10 +114,6 @@ class MovieRepository @Inject constructor(
             dao.replaceGenreList(genreList.genreList.map { it.toGenreEntity() })
         }
     )
-
-    fun getAllMovies(): Flow<Resource<List<AllMoviesResult>>> {
-        return dao.allMovies().filterNotNull().map { Resource.Success(result = it) }
-    }
 
     fun getMoviesByGenre(genreId: Int?): Flow<Resource<List<MovieByGenreEntity>>> =
         networkBoundResource(

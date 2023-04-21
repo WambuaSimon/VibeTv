@@ -15,8 +15,8 @@ fun MovieHeader(
     @StringRes title: Int,
     @StringRes actionText: Int? = null,
     onMovieGridClicked: (() -> Unit)? = null,
+    action: @Composable (() -> Unit)? = null,
 ) {
-
     ListItem(
         modifier = modifier,
         headlineText = {

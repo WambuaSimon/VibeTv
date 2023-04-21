@@ -71,9 +71,8 @@ interface VibeApi {
         @Path("time_window") timeWindow:String,
     ): Paged<List<MovieResults>>
 
-    @GET("trending/{media_type}/{time_window}")
+    @GET("trending/movie/{time_window}")
     suspend fun getTrending(
-        @Path("media_type") mediaType:String,
         @Path("time_window") timeWindow:String,
     ): Paged<List<MovieResults>>
 }
