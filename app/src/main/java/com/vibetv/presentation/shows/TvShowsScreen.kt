@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -22,21 +21,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vibetv.R
-import com.vibetv.common.utils.ViewState
-import com.vibetv.designSystem.components.EmptyScreen
+import com.vibetv.common.utils.Resource
 import com.vibetv.presentation.shows.components.AiringShowCard
 import com.vibetv.presentation.shows.components.PopularShowCard
 import com.vibetv.presentation.shows.components.TopRatedShowCard
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TvShowsScreen(
+    state: Resource<ShowPageState>,
     modifier: Modifier = Modifier,
     model: ShowModel,
     onNavigateToShowDetails: (Int) -> Unit,
-    onMoreClicked: (String,String?) -> Unit,
+    onMoreClicked: (String, String?) -> Unit,
 ) {
-    val state = model.state
     val errorState = model.error
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
@@ -62,56 +59,49 @@ fun TvShowsScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { contentPadding ->
-        when (state) {
-            ViewState.Empty -> {
-                EmptyScreen(modifier = modifier)
+        if (state is Resource.Loading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
             }
+        }
+        if (state is Resource.Success) {
+            val result = state.result
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                AiringShowCard(
+                    modifier = modifier,
+                    result = result.airingToday.orEmpty(),
+                    onNavigateToShowDetails = onNavigateToShowDetails,
+                    onMoreClicked = onMoreClicked
+                )
+                // LatestShowCard(modifier = modifier, result = result?.latestShow.orEmpty())
+                TopRatedShowCard(
+                    modifier = modifier,
+                    result = result.topRatedShow.orEmpty(),
+                    onNavigateToShowDetails = onNavigateToShowDetails,
+                    onMoreClicked = onMoreClicked
+                )
 
-            ViewState.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(contentPadding),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            is ViewState.Ready -> {
-                val result = state.value.result
-                Column(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                ) {
-                    AiringShowCard(
-                        modifier = modifier,
-                        result = result?.airingToday.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails,
-                        onMoreClicked =  onMoreClicked
-                    )
-                    // LatestShowCard(modifier = modifier, result = result?.latestShow.orEmpty())
-                    TopRatedShowCard(
-                        modifier = modifier,
-                        result = result?.topRatedShow.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails,
-                        onMoreClicked = onMoreClicked
-                    )
-
-                    PopularShowCard(
-                        modifier = modifier,
-                        result = result?.popularShow.orEmpty(),
-                        onNavigateToShowDetails = onNavigateToShowDetails,
-                        onMoreClicked = onMoreClicked
-                    )
-
-                }
+                PopularShowCard(
+                    modifier = modifier,
+                    result = result.popularShow.orEmpty(),
+                    onNavigateToShowDetails = onNavigateToShowDetails,
+                    onMoreClicked = onMoreClicked
+                )
 
             }
 
         }
+
     }
 }
