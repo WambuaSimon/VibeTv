@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.navigation.animation.composable
 import com.vibetv.presentation.home.movie_grid.MovieGridScreen
 import com.vibetv.presentation.home.movie_grid.MovieGridViewModel
@@ -28,7 +29,8 @@ internal fun NavGraphBuilder.movieGridScreen(
             onNavigateUp = onNavigateUp,
             onMovieDetailsClick = onMovieDetailsClick,
             model = viewModel.model,
-            title = viewModel.model.title
+            title = viewModel.model.title,
+            nowPlayingResultEntity = viewModel.getNowPlaying().collectAsLazyPagingItems()
         )
     }
 }

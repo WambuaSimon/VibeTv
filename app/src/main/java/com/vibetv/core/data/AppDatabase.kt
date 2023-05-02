@@ -2,7 +2,7 @@ package com.vibetv.core.data
 
 import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.DeleteTable
+import androidx.room.RenameColumn
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.AutoMigrationSpec
@@ -60,7 +60,8 @@ import com.vibetv.core.data.entities.shows.TopRatedShowsEntity
      autoMigrations = [
          AutoMigration(from = 1, to = 2),
          AutoMigration(from = 2, to = 3),
-         AutoMigration(from = 3, to = 4),
+         AutoMigration(from = 3, to = 4, spec = AppDatabase.To4Migration::class),
+
      ]
 )
 
@@ -85,7 +86,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun seasonsDao(): SeasonsDao
     abstract fun movieRemoteKeyDao(): MovieRemoteKeyDao
 
-    @DeleteTable(tableName = "episode_item")
-    class To13AutoMigrationSpec : AutoMigrationSpec
+        @RenameColumn(
+            tableName = "movie_remote_keys",
+            fromColumnName = "id",
+            toColumnName = "movie_id",
+    )
+        class To4Migration : AutoMigrationSpec
 
 }

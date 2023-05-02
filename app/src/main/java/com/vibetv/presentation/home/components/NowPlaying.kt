@@ -18,7 +18,7 @@ fun NowPlaying(
     modifier: Modifier,
     nowPlaying: List<NowPlayingResultEntity>? = emptyList(),
     onMovieDetailsClick: (Int) -> Unit,
-    navigateToMovieGrid: (String,String?) -> Unit,
+    navigateToMovieGrid: (String, String?) -> Unit,
 ) {
     Column(modifier = modifier) {
         MovieHeader(
@@ -35,6 +35,7 @@ fun NowPlaying(
         ) {
 
             items(nowPlaying.orEmpty()) { nowPlayingMoviesItem ->
+
                 MovieCard(
                     modifier = modifier,
                     poster = nowPlayingMoviesItem.poster_path.orEmpty(),
@@ -45,6 +46,7 @@ fun NowPlaying(
                     }
                 )
             }
+
 
         }
 

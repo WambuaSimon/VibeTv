@@ -2,6 +2,7 @@ package com.vibetv.designSystem.theme
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -9,6 +10,7 @@ import com.vibetv.common.utils.Resource
 import com.vibetv.core.network.NoNetworkException
 import com.vibetv.designSystem.components.SnackbarVisualsComponent
 
+@OptIn(ExperimentalMaterial3Api::class)
 suspend fun ShowErrorSnackbar(
     context: Context,
     snackbarHostState: SnackbarHostState,

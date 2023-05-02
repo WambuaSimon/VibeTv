@@ -77,6 +77,22 @@ class MovieRepository @Inject constructor(
         )
     }
 
+   /* fun getNowPlaying(): Flow<PagingData<NowPlayingResultEntity>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = 10,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                db.movieDao().nowPlaying()
+            },
+            remoteMediator = NowPlayingMovieMediator(
+                api,
+                db
+            )
+        ).flow*/
+
     fun getTopRated(): Flow<Resource<List<TopRatedResultEntity>>> = networkBoundResource(
         fetch = { api.getTopRated() },
         networkStatus = context.networkStatus(),

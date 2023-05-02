@@ -9,13 +9,13 @@ import com.vibetv.core.data.entities.MovieRemoteKeyEntity
 @Dao
 interface MovieRemoteKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrReplace(remoteKey: MovieRemoteKeyEntity)
+    suspend fun insertOrReplace(remoteKey: List<MovieRemoteKeyEntity>)
 
-    @Query("SELECT * FROM movie_remote_keys")
-    suspend fun remoteKey(): MovieRemoteKeyEntity?
+    @Query("SELECT * FROM movie_remote_keys Where movie_id = :id")
+    suspend fun remoteKeyByMovieId(id: Int): MovieRemoteKeyEntity?
 
     @Query("SELECT created_at FROM movie_remote_keys Order By created_at DESC LIMIT 1")
-   suspend fun getCreationTime():Long?
+    suspend fun getCreationTime(): Long?
 
     @Query("DELETE FROM movie_remote_keys")
     suspend fun delete()

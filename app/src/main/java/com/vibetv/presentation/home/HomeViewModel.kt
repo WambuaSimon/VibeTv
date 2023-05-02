@@ -2,6 +2,7 @@ package com.vibetv.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import com.vibetv.common.utils.Resource
 import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalPagingApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     repo: MovieRepository,
@@ -28,6 +29,21 @@ class HomeViewModel @Inject constructor(
     val homeModel: HomeModel = HomeModel()
 
     private val refresh = MutableStateFlow(0)
+    /*fun getNowPlaying(): Flow<PagingData<NowPlayingResultEntity>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = 10,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                db.movieDao().nowPlaying()
+            },
+            remoteMediator = NowPlayingMovieMediator(
+                api,
+                db
+            )
+        ).flow*/
 
     val state: StateFlow<Resource<HomePageState>> = refresh
         .flatMapLatest { homeModel.selectedFilterOption }

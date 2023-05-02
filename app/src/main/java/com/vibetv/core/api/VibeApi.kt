@@ -20,7 +20,8 @@ interface VibeApi {
     ): MovieResponse
 
     @GET("movie/now_playing")
-    suspend fun nowPlaying(): MovieResponse
+    suspend fun nowPlaying(
+    ): MovieResponse
 
     @GET("movie/top_rated")
     suspend fun getTopRated(): VibeCloudResponse<MovieResponse>

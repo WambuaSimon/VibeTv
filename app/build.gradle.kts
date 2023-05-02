@@ -51,12 +51,12 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
 
-       /* create("shared-debug") {
-            storeFile = rootProject.file("debug-keystore.jks")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-        }*/
+        /* create("shared-debug") {
+             storeFile = rootProject.file("debug-keystore.jks")
+             storePassword = "android"
+             keyAlias = "androiddebugkey"
+             keyPassword = "android"
+         }*/
     }
 
     buildTypes {
@@ -72,7 +72,7 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
             isDebuggable = true
-          //  signingConfig = signingConfigs.getByName("shared-debug")
+            //  signingConfig = signingConfigs.getByName("shared-debug")
         }
 
     }
@@ -114,6 +114,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.0-alpha07")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose:compose-bom:2023.01.00")
@@ -164,4 +165,36 @@ dependencies {
     implementation("androidx.paging:paging-runtime:3.1.1")
     implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.compose.ui:ui-test")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("app.cash.turbine:turbine:0.12.3")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation(" io.mockk:mockk-jvm:1.13.4")
+    testImplementation(" io.kotest:kotest-assertions-shared-jvm:5.5.5")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    // testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.4")
+    //Tests
+    /*
+        testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.4")
+        testImplementation ("app.cash.turbine:turbine:0.12.3")
+        // To use the androidx.test.core APIs
+        androidTestImplementation("androidx.test:core:1.5.0")
+        // Kotlin extensions for androidx.test.core
+        androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    // To use the Truth Extension APIs
+        androidTestImplementation("androidx.test.ext:truth:1.5.0")
+
+        // To use the androidx.test.runner APIs
+        androidTestImplementation("androidx.test:runner:1.5.2")
+
+        // To use android test orchestrator
+        androidTestUtil("androidx.test:orchestrator:1.4.2")
+
+        // AndroidJUnitRunner and JUnit Rules
+        androidTestImplementation("androidx.test:rules:1.5.0")
+
+        kaptTest("com.google.dagger:hilt-android-compiler:2.44.2")*/
 }

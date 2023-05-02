@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,9 +21,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.vibetv.R
 import com.vibetv.common.utils.Resource
 import com.vibetv.designSystem.theme.ShowErrorSnackbar
@@ -34,6 +32,7 @@ import com.vibetv.presentation.home.state.HomeModel
 import com.vibetv.presentation.home.state.HomePageState
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -64,12 +63,12 @@ internal fun HomeScreen(
 
     }
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+   /* val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(lifecycle) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             onRefreshClick()
         }
-    }
+    }*/
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }

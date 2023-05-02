@@ -1,3 +1,4 @@
+/*
 package com.vibetv.core.di
 
 import androidx.paging.ExperimentalPagingApi
@@ -25,4 +26,4 @@ object PagingModule {
         config = PagingConfig(pageSize = 20, initialLoadSize = 20),
         remoteMediator = remoteMediator
     ) { moviesDao.trending() }
-}
+}*/

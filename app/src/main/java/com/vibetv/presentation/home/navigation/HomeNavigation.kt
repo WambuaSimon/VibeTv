@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeScreen(
             state = homeViewModel.state.collectAsStateWithLifecycle().value,
             navigateToMovieGrid = onNavigateToMovieGrid,
             onRefreshClick = homeViewModel::refresh,
-            homeModel = homeViewModel.homeModel
+            homeModel = homeViewModel.homeModel,
         )
     }
 

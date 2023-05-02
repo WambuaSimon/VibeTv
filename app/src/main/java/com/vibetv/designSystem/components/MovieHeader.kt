@@ -1,6 +1,7 @@
 package com.vibetv.designSystem.components
 
 import androidx.annotation.StringRes
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieHeader(
     modifier: Modifier,

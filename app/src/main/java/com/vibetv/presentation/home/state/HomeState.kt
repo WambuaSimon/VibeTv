@@ -16,14 +16,12 @@ class HomeModel(
     val selectedFilterOption = MutableStateFlow(TimeWindow.day)
     var error: Resource.Error<Unit>? by mutableStateOf(error)
 }
-
 data class HomePageState(
     val nowPlaying: List<NowPlayingResultEntity>? = emptyList(),
     val popular: List<PopularResultEntity>? = emptyList(),
     val topRated: List<TopRatedResultEntity>? = emptyList(),
     val trending: List<TrendingEntity>? = emptyList()
 )
-
 
 enum class TimeWindow {
     day,
