@@ -22,8 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vibetv.common.utils.ViewState
-import com.vibetv.designSystem.components.EmptyScreen
+import com.vibetv.common.utils.Resource
 import com.vibetv.presentation.shows.show_details.components.SeasonDetails
 import com.vibetv.presentation.shows.show_details.components.ShowCenterDetails
 import com.vibetv.presentation.shows.show_details.components.ShowDetails
@@ -42,11 +41,8 @@ fun ShowsDetailsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     when (val state = model.state) {
-        ViewState.Empty -> {
-            EmptyScreen(modifier = modifier)
-        }
 
-        ViewState.Loading -> {
+        Resource.Loading -> {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -56,8 +52,8 @@ fun ShowsDetailsScreen(
             }
         }
 
-        is ViewState.Ready -> {
-            val result = state.value.result?.showDetails
+        is Resource.Success -> {
+            val result = state.result.showDetails
 
             Scaffold(
                 topBar = {
@@ -98,9 +94,9 @@ fun ShowsDetailsScreen(
 
                     SeasonDetails(
                         modifier = modifier,
-                        model = seasonDetailsModel,
+                        episodeModel = episodeModel,
                         onClickEpisode = onClickEpisode,
-                        episodeModel = episodeModel
+                        state = seasonDetailsModel.state
                     )
                 }
 
@@ -109,5 +105,6 @@ fun ShowsDetailsScreen(
 
         }
 
+        else -> Unit
     }
 }

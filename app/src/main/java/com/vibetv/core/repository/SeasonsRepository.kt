@@ -38,7 +38,7 @@ class SeasonsRepository @Inject constructor(
         networkBoundResource(
             fetch = { api.getEpisodeItem(tvId, seasonNumber, episodeNumber) },
             networkStatus = context.networkStatus(),
-            query = { dao.episode() },
+            query = { dao.getSeasonEpisodes(seasonNumber) },
             saveRemoteData = { response ->
                 dao.replaceEpisodeDetails(response.toEpisodeEntity())
 

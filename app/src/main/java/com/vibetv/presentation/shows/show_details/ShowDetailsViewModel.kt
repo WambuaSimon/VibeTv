@@ -1,11 +1,12 @@
 package com.vibetv.presentation.shows.show_details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vibetv.common.utils.Resource
 import com.vibetv.common.utils.ViewState
+import com.vibetv.core.data.entities.season.SeasonDetailsEntity
+import com.vibetv.core.data.entities.show_details.ShowDetailsResponseEntity
 import com.vibetv.core.repository.SeasonsRepository
 import com.vibetv.core.repository.ShowRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,107 +25,97 @@ class ShowDetailsViewModel @Inject constructor(
     val seasonsModel: SeasonDetailsModel = SeasonDetailsModel()
     private val showId: Int = savedStateHandle.get<Int>("infoId")?.toInt()!!
 
+    private fun buildState(
+        showDetails: ShowDetailsResponseEntity?
+    ): ShowDetailsPageState = ShowDetailsPageState(
+        showDetails = showDetails
+    )
+
     init {
         viewModelScope.launch {
-            repo.getShowDetails(showId).map { details ->
+            repo.getShowDetails(showId).collect { details ->
                 when (details) {
                     is Resource.Error -> {
-                        ViewState.Ready(
-                            Resource.Error<ShowDetailsPageState>(
-                                details.throwable
-                            )
-                        )
+                        model.error = details.mapError {
+                            buildState(showDetails = details.result)
+                        }
+
                     }
 
-                    Resource.Loading -> ViewState.Loading
                     is Resource.Success -> {
-                        ViewState.Ready(
-                            Resource.Success(
-                                ShowDetailsPageState(showDetails = details.result)
-                            )
+                        model.state = Resource.Success(
+                            buildState(showDetails = details.result)
                         )
-
+                        getSeasonDetails(0)
                     }
-                }
 
-            }.collect { viewState ->
-                model.state = viewState
-                if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
-                    val result = viewState.value.result
-                    ShowDetailsPageState(showDetails = result.showDetails)
+                    else -> Resource.Loading
+
                 }
             }
+
         }
-        getSeasonDetails(0)
     }
+
+    private fun buildSeasonState(seasonsDetailsEntity: SeasonDetailsEntity?):
+            SeasonsDetailsPageState = SeasonsDetailsPageState(
+        seasonDetails = seasonsDetailsEntity
+    )
 
     fun getSeasonDetails(seasonNumber: Int) {
         viewModelScope.launch {
-            seasonsRepo.getSeasonDetails(showId, seasonNumber).map { seasonsEntity ->
-                when (seasonsEntity) {
-                    is Resource.Error -> {
-                        ViewState.Ready(
-                            Resource.Error<SeasonsDetailsPageState>(
-                                seasonsEntity.throwable
-                            )
-                        )
-                    }
+            seasonsRepo.getSeasonDetails(showId, seasonNumber).collect { seasons ->
 
-                    Resource.Loading -> ViewState.Loading
+                when (seasons) {
+
+                    is Resource.Error -> {
+                        seasonsModel.error = seasons.mapError {
+                            buildSeasonState(seasonsDetailsEntity = seasons.result)
+                        }
+                    }
 
                     is Resource.Success -> {
-                        ViewState.Ready(
-                            Resource.Success(
-                                SeasonsDetailsPageState(
-                                    seasonDetails = seasonsEntity.result
-                                )
-                            )
+                        seasonsModel.state = Resource.Success(
+                            buildSeasonState(seasonsDetailsEntity = seasons.result)
                         )
-
                     }
-                }
-            }.collect { viewState ->
-                seasonsModel.state = viewState
-                if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
-                    val result = viewState.value.result
-                    SeasonsDetailsPageState(seasonDetails = result.seasonDetails)
-                }
 
+                    else -> Resource.Loading
+                }
             }
         }
     }
 
     fun getEpisode(seasonNumber: Int, episodeNumber: Int) {
         viewModelScope.launch {
-            seasonsRepo.getEpisodeDetails(showId, seasonNumber, episodeNumber).map { episode ->
-                when (episode) {
-                    is Resource.Error -> {
-                        ViewState.Ready(
-                            Resource.Error<EpisodeModelPageState>(episode.throwable)
-                        )
-                    }
+            seasonsRepo.getEpisodeDetails(showId, seasonNumber, episodeNumber)
+                .map { episode ->
+                    when (episode) {
+                        is Resource.Error -> {
+                            ViewState.Ready(
+                                Resource.Error<EpisodeModelPageState>(episode.throwable)
+                            )
+                        }
 
-                    Resource.Loading -> ViewState.Loading
-                    is Resource.Success -> {
-                        ViewState.Ready(
-                            Resource.Success(
-                                EpisodeModelPageState(
-                                    episode = episode.result
+                        Resource.Loading -> ViewState.Loading
+                        is Resource.Success -> {
+                            ViewState.Ready(
+                                Resource.Success(
+                                    EpisodeModelPageState(
+                                        episode = episode.result
+                                    )
                                 )
                             )
-                        )
-                    }
+                        }
 
+                    }
+                }.collect { viewState ->
+                    episodeModel.state = viewState
+                    if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
+                        val result = viewState.value.result
+                        EpisodeModelPageState(result.episode)
+                    }
                 }
-            }.collect { viewState ->
-                episodeModel.state = viewState
-                if (viewState is ViewState.Ready && viewState.value is Resource.Success) {
-                    val result = viewState.value.result
-                    EpisodeModelPageState(result.episode)
-                }
-            }
         }
     }
-
-
 }

@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
 import com.vibetv.presentation.shows.show_details.navigation.navigateToShowDetails
-import com.vibetv.presentation.shows.show_details.navigation.showsDetailsGraph
+import com.vibetv.presentation.shows.show_details.navigation.showDetailsScreen
 
 const val showsNavigationRoutePattern = "shows_graph"
 
@@ -25,6 +25,6 @@ fun NavGraphBuilder.showsGraph(
                 navController.navigateToShowDetails(it)
             }
         )
-        showsDetailsGraph(navController)
+        showDetailsScreen(onNavigateUp = navController::navigateUp)
     }
 }
