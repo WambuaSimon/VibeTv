@@ -6,17 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.vibetv.common.utils.Resource
 import com.vibetv.core.api.VibeApi
 import com.vibetv.core.data.AppDatabase
-import com.vibetv.core.data.entities.NowPlayingResultEntity
 import com.vibetv.core.data.entities.PopularResultEntity
 import com.vibetv.core.data.entities.TrendingEntity
 import com.vibetv.core.paging.NowPlayingMovieMediator
 import com.vibetv.core.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,13 +66,12 @@ class MovieGridViewModel @Inject constructor(
         }
     }
 
-    fun getNowPlaying(): Flow<PagingData<NowPlayingResultEntity>> =
+    val playingFlow =
         Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = 10,
-                initialLoadSize = PAGE_SIZE
-            ),
+
+                ),
             pagingSourceFactory = {
                 db.movieDao().nowPlaying()
             },
@@ -83,6 +80,7 @@ class MovieGridViewModel @Inject constructor(
                 db
             )
         ).flow
+            .cachedIn(viewModelScope)
 
     /* private fun getNowPlaying() {
          viewModelScope.launch {
@@ -123,11 +121,11 @@ class MovieGridViewModel @Inject constructor(
         }
     }
 
-   /* private fun buildPlayingState(
-        playing: List<NowPlayingResultEntity>
-    ) {
-        model.nowPlaying = playing
-    }*/
+    /* private fun buildPlayingState(
+         playing: List<NowPlayingResultEntity>
+     ) {
+         model.nowPlaying = playing
+     }*/
 
     private fun buildPopularState(
         popular: List<PopularResultEntity>

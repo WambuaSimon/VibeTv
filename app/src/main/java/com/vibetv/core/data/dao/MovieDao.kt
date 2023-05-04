@@ -22,7 +22,7 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(playing: List<NowPlayingResultEntity>)
 
-    @Query("SELECT * FROM now_playing")
+    @Query("SELECT * FROM now_playing Order By page")
     fun nowPlaying(): PagingSource< Int, NowPlayingResultEntity>
 
     @Query("SELECT * FROM now_playing")

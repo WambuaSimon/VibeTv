@@ -30,7 +30,7 @@ internal fun NavGraphBuilder.movieGridScreen(
             onMovieDetailsClick = onMovieDetailsClick,
             model = viewModel.model,
             title = viewModel.model.title,
-            nowPlayingResultEntity = viewModel.getNowPlaying().collectAsLazyPagingItems()
+            nowPlayingResultEntity = viewModel.playingFlow.collectAsLazyPagingItems()
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.vibetv.presentation.home.movie_grid
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -107,37 +108,41 @@ fun MovieGridScreen(
                         } else {
                             Modifier.fillMaxSize()
                         }
-                        Column(
-                            modifier = modifier,
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            if (!isPaginatingError) {
-                                Icon(
+                        AnimatedVisibility(visible = nowPlayingResultEntity.itemCount > 0) {
+
+                            Column(
+                                modifier = modifier,
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                if (!isPaginatingError) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .size(64.dp),
+                                        imageVector = Icons.Rounded.Warning,
+                                        contentDescription = null
+                                    )
+                                }
+
+                                Text(
                                     modifier = Modifier
-                                        .size(64.dp),
-                                    imageVector = Icons.Rounded.Warning, contentDescription = null
+                                        .padding(8.dp),
+                                    text = error.message ?: error.toString(),
+                                    textAlign = TextAlign.Center,
+                                )
+
+                                Button(
+                                    onClick = {
+                                        movie.refresh()
+                                    },
+                                    content = {
+                                        Text(text = "Refresh")
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        contentColor = Color.White,
+                                    )
                                 )
                             }
-
-                            Text(
-                                modifier = Modifier
-                                    .padding(8.dp),
-                                text = error.message ?: error.toString(),
-                                textAlign = TextAlign.Center,
-                            )
-
-                            Button(
-                                onClick = {
-                                    movie.refresh()
-                                },
-                                content = {
-                                    Text(text = "Refresh")
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    contentColor = Color.White,
-                                )
-                            )
                         }
                     }
 
@@ -149,18 +154,18 @@ fun MovieGridScreen(
                         columns = GridCells.Adaptive(110.dp),
                         content = {
                             items(nowPlayingResultEntity.itemCount) { index ->
-                                if (nowPlayingResultEntity[index] != null) {
+                                val playingItem = nowPlayingResultEntity[index]
+                                if (playingItem != null) {
                                     MovieCard(
                                         modifier = modifier,
-                                        poster = nowPlayingResultEntity[index]?.poster_path.orEmpty(),
-                                        voteAverage = nowPlayingResultEntity[index]?.vote_average
-                                            ?: 0.0,
+                                        poster = playingItem.poster_path.orEmpty(),
+                                        voteAverage = playingItem.vote_average,
                                         onClick = {
                                             onMovieDetailsClick(
-                                                nowPlayingResultEntity[index]?.id ?: 1
+                                                playingItem.id
                                             )
                                         },
-                                        id = nowPlayingResultEntity[index]?.id ?: 1
+                                        id = playingItem.id
                                     )
                                 }
                             }

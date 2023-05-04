@@ -18,9 +18,13 @@ class NowPlayingMovieMediator(
     private val api: VibeApi,
     private val db: AppDatabase
 ) : RemoteMediator<Int, NowPlayingResultEntity>() {
+
+    val movieDao = db.movieDao()
+    val remoteKeyDao = db.movieRemoteKeyDao()
     override suspend fun initialize(): InitializeAction {
-       return InitializeAction.LAUNCH_INITIAL_REFRESH
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, NowPlayingResultEntity>
@@ -54,8 +58,8 @@ class NowPlayingMovieMediator(
             val endOfPaginationReached = movies.isEmpty()
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    db.movieRemoteKeyDao().delete()
-                    db.movieDao().clearNowPlaying()
+                    remoteKeyDao.delete()
+                    movieDao.clearNowPlaying()
                 }
 
                 val prevKey = if (page > 1) page - 1 else null

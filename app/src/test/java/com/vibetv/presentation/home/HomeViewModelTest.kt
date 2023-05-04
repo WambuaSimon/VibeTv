@@ -13,6 +13,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -35,6 +36,13 @@ class HomeViewModelTest {
     @Before
     fun setUp() {
         viewModel = HomeViewModel(movieRepo)
+    }
+
+    @Test
+    fun stateIsInitiallyLoading() = runTest {
+        assertEquals(
+            Resource.Loading, viewModel.state.value
+        )
     }
 
     private val popularMovies = Resource.Success(
