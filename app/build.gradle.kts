@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -51,34 +51,38 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
 
-        /* create("shared-debug") {
-             storeFile = rootProject.file("debug-keystore.jks")
-             storePassword = "android"
-             keyAlias = "androiddebugkey"
-             keyPassword = "android"
-         }*/
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = true
-            proguardFiles += file("proguard-android-optimize.txt")
-            proguardFiles += file("proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
-
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 
-        debug {
+        getByName("debug") {
             applicationIdSuffix = ".debug"
-            versionNameSuffix = "-DEBUG"
             isDebuggable = true
-            //  signingConfig = signingConfigs.getByName("shared-debug")
         }
 
     }
-    buildFeatures {
-        compose = true
+
+    flavorDimensions += "appType"
+    productFlavors {
+        create("mock") {
+            dimension = "appType"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-dev"
+            manifestPlaceholders ["applicationLabel"] = "VibeTv Mock"
+        }
+
+        create("production") {
+            dimension = "appType"
+            applicationIdSuffix = ".prod"
+            versionNameSuffix = "-prod"
+
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -89,18 +93,26 @@ android {
     buildFeatures {
         compose = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.0"
     }
+
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 
-}
+    androidComponents {
+        beforeVariants { variantBuilder ->
+            if (variantBuilder.buildType == "release" && variantBuilder.productFlavors.toMap()["appType"] != "production") {
+                variantBuilder.enable = false
+            }
+        }
+    }
 
-//tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+}
 
 dependencies {
     implementation("androidx.core:core-ktx:1.8.0")
@@ -108,7 +120,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-rc01")
     implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.compose:compose-bom:2023.01.00")
+    implementation("androidx.compose:compose-bom:2023.04.01")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -169,7 +181,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.compose.ui:ui-test")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation ("app.cash.turbine:turbine:0.12.3")
+    testImplementation("app.cash.turbine:turbine:0.12.3")
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation(" io.mockk:mockk-jvm:1.13.4")
     testImplementation(" io.kotest:kotest-assertions-shared-jvm:5.5.5")

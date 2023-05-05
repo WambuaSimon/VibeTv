@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.vibetv.core.data.entities.season.EpisodeEntity
 import com.vibetv.core.data.entities.season.SeasonDetailsEntity
-import com.vibetv.core.model.season_details.Episode
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -39,6 +38,8 @@ interface SeasonsDao {
     @Query("DELETE FROM episode")
     suspend fun clearEpisodeDetails()
 
+    @Query("SELECT * FROM episode WHERE season_number = :seasonNumber")
+    fun getSeasonEpisodes(seasonNumber: Int): Flow<EpisodeEntity>
 
     @Transaction
     suspend fun replaceEpisodeDetails(episode: EpisodeEntity) {
